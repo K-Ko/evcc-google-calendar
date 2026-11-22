@@ -1,0 +1,23 @@
+{
+    "name": "k-ko/evcc-google-calendar",
+    "description": "Manages evcc charging planning via a Google Calendar",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Knut Kohl",
+            "email": "github@knutkohl.de"
+        }
+    ],
+    "require-dev": {
+        "symfony/var-dumper": "^6.4"
+    },
+    "require": {
+        "johngrogg/ics-parser": "^3.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    }
+}

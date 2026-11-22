@@ -1,0 +1,9 @@
+composer
+
+config.php
+
+/cache/*
+/logs/*
+/vendor/
+
+!.githold
