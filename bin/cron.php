@@ -19,5 +19,5 @@ $evcc = new \Core\EVCC($config);
 echo date('- d.m.Y H:i'), "\n";
 
 if ($evcc->fetch()) {
-    echo implode("\n", $evcc->plan());
+    echo implode("\n", $evcc->plan()), "\n";
 }
