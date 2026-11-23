@@ -3,6 +3,10 @@
 return  [
     'debug' => true,
 
+    // Frontend language (en|de); default "en"
+    // 'language' => 'de',
+
+
     'cache-dir' => realpath(__DIR__ . '/../cache'),  // string, fallback is /tmp
 
     // Uncomment and maintain for frontend basic auth

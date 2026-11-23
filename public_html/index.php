@@ -29,15 +29,23 @@ if (!empty($config['frontend']['user']) && !empty($config['frontend']['hash'])) 
 
 session_start();
 
+$lang = ROOT . '/language/' . ($config['language'] ?? 'en') . '.php';
+
+if (!is_file($lang)) {
+    // Fallback
+    $lang = ROOT . '/language/en.php';
+}
+
+$i18n = new \Core\I18N(require $lang);
+
 $evcc = new \Core\EVCC($config);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $_SESSION['messages'][] = $evcc->fetch() ? 'Termine wurden aktualisiert.' : 'Leere Antwort von Google';
+    $_SESSION['messages'][] = $evcc->fetch() ? $i18n->PlansRefreshed : $i18n->EmptyResponse;
 
     // Reload page to break POST
     die(header('Location: /'));
 }
-
 // --------------------------------------------------------------------------
 
 $now = time();
@@ -96,20 +104,20 @@ unset($_SESSION['messages']);
         ?>
 
         <h3 class="form-group">
-            Termine
+            <?= $i18n->Plans ?>
             <form method="post" class="float-right">
-                <button type"submit" class="btn btn-sm btn-primary">Aktualisieren</button>
+                <button type"submit" class="btn btn-sm btn-primary"><?= $i18n->Refresh ?></button>
             </form>
         </h3>
 
         <table class="table border-bottom">
             <thead class="thead-light">
                 <tr>
-                    <th class="text-center w-1">Zeitpunkt</th>
-                    <th class="text-nowrap text-right w-1">Restzeit</th>
-                    <th class="text-center w-1">Ladestand</th>
-                    <th>Strategie</th>
-                    <th>Kommentar</th>
+                    <th class="text-center w-1"><?= $i18n->DateTime ?></th>
+                    <th class="text-nowrap text-right w-1"><?= $i18n->Remaining ?></th>
+                    <th class="text-center w-1"><?= $i18n->ChargeLevel ?></th>
+                    <th><?= $i18n->Strategy ?></th>
+                    <th><?= $i18n->Comment ?></th>
                 </tr>
             </thead>
 
@@ -125,7 +133,7 @@ unset($_SESSION['messages']);
 
                     printf(
                         '<td class="text-nowrap text-center text-monospace">%s</td>',
-                        date('d.m.Y H:i', $event['ts'])
+                        date($i18n->DateTimeFormat, $event['ts'])
                     );
 
                     printf(

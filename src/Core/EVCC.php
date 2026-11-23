@@ -4,6 +4,11 @@ namespace Core;
 
 final class EVCC
 {
+    /**
+     * Class constructor
+     *
+     * @param array $options
+     */
     public function __construct(array $options)
     {
         $this->options = $options;
@@ -14,6 +19,11 @@ final class EVCC
         $this->eventsFile = $cacheDir . '/events.json';
     }
 
+    /**
+     * Fetch Google calendar data
+     *
+     * @return boolean
+     */
     public function fetch(): bool
     {
         // Force
@@ -29,6 +39,11 @@ final class EVCC
         return is_file($this->icsFile) && filesize($this->icsFile) > 0;
     }
 
+    /**
+     * Analyse Google calendar data
+     *
+     * @return array
+     */
     public function analyse(): array
     {
         if (!is_file($this->icsFile) || !filesize($this->icsFile)) {
@@ -111,6 +126,11 @@ final class EVCC
         return $events;
     }
 
+    /**
+     * Send data to evcc
+     *
+     * @return array  Messages
+     */
     public function plan(): array
     {
         if (!is_file($this->eventsFile) || !filesize($this->eventsFile)) {
@@ -187,12 +207,25 @@ final class EVCC
     /** @var array */
     private $options = [];
 
-    /** @var string */
+    /**
+     * Raw calendar ICS data
+     * @var string
+     */
     private $icsFile;
 
-    /** @var string */
+    /**
+     * Analysed calendar data, filtered for plan data
+     * @var string
+     */
     private $eventsFile;
 
+    /**
+     * curl POST wrapper
+     *
+     * @param  string $path
+     * @param  string $data
+     * @return array  Messages
+     */
     private function curlPOST(string $path, string $data = ''): array
     {
         $url = sprintf(
