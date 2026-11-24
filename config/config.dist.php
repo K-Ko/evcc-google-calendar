@@ -31,7 +31,7 @@ return  [
     'loadpoint' => [
         // Which charging point should be controlled
         'number' => '...',  // REQUIRED, int
-        // Max. phases, automatic switching: 0, set to FALSE to disable cntrolling
+        // Max. phases, automatic switching: 0, set to FALSE to disable controlling
         'phases' => 0  // FALSE|int
     ],
 
@@ -48,9 +48,9 @@ return  [
         // FALSE is relevant for dynamic traiffs
         'continuous' => false,  // bool
 
-        // Switch from late charging "all" to charging "late" if next plan is less "switch" seconds from now
-        // (run all day with "late all" and switch below 12 h to "late 15 min.")
-        // Charge late all > 12 h for max. PV usage
+        // Switch from late charging "all" to charging "late" if next plan is less "switch" hours from now
+        // (run all day with "late all" e.g. for PV charging and switch below 12 h to "late 15 min.")
+        // Charge late all > 24 h for max. PV usage
         'switch' => 12,  // Hours, float
 
         // Late charging: 15 mins
