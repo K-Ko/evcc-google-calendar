@@ -100,13 +100,13 @@ final class EVCC
                 $event['target'] = min($event['target'], 100);
 
                 if ($description = $ICalEvent->description) {
-                    $description = preg_replace('~[^a-z0-9,]+~i', '', $description);
+                    $description = preg_replace('~[^a-z0-9,.]+~i', '', $description);
                     $description = explode(',', $description);
 
                     $event['strategy'] = sprintf(
                         '{"continuous":%s,"precondition":%d}',
                         $description[0],
-                        $description[1] * 60
+                        floatval($description[1]) * 60
                     );
                 }
 

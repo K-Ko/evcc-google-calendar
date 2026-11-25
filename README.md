@@ -54,7 +54,9 @@ Enter this in the event body (not case-sensitive):
 
 Let’s say you want to charge continuously for an event and use the last 30 minutes for pre-heating:
 
-`true, 30`
+`true, 0.5`
+
+(Time in **hours** with a **dot** as decimal separator)
 
 ## Frontend
 
