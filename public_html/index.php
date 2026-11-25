@@ -174,6 +174,9 @@ unset($_SESSION['messages']);
             </tbody>
         </table>
 
+        <div class="small text-center"><?= file_get_contents(__DIR__ . '/../.version') ?></div>
+
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>

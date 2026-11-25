@@ -106,7 +106,7 @@ final class EVCC
                     $event['strategy'] = sprintf(
                         '{"continuous":%s,"precondition":%d}',
                         $description[0],
-                        floatval($description[1]) * 60
+                        floatval($description[1]) * 3600
                     );
                 }
 
