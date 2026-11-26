@@ -48,15 +48,13 @@ You can override the strategy as follows, regardless of the global configuration
 
 Enter this in the event body (not case-sensitive):
 
-`(true|false), <minutes>`
+`(true|false), <hours>`
 
-(Please note that **minutes** expected here)
+_Please note that **hours** expected here with a **dot** as decimal separator_
 
 Let’s say you want to charge continuously for an event and use the last 30 minutes for pre-heating:
 
 `true, 0.5`
-
-(Time in **hours** with a **dot** as decimal separator)
 
 ## Frontend
 
