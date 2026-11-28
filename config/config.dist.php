@@ -19,7 +19,8 @@ return  [
     'calendar' => [
         'url' => '...',  // REQUIRED, string
         // An event relevant for evcc MUST start its summary whith this
-        'summary-start' => '::'  // string
+        'summary-start' => '::'        // string
+        // 'summary-start' => 'Auto:'  // string
     ],
 
     // Default

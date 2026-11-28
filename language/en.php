@@ -10,8 +10,15 @@ return [
     'Remaining'      => 'Remaining',
     'ChargeLevel'    => 'Charge level',
     'Strategy'       => 'Strategy',
+    'continuously'   => 'continuously',
+    'late'           => 'late',
+    'event'          => 'Event',
     'Comment'        => 'Comment',
 
     'PlansRefreshed' => 'Dates have been updated.',
     'EmptyResponse'  => 'Empty response from Google.',
+
+    'yes' => 'yes',
+    'no'  => 'no',
+    'all' => 'all',
 ];

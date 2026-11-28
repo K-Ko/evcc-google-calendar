@@ -16,7 +16,7 @@ print_r($config);
 
 echo "\n";
 
-$evcc = new \Core\EVCC($config);
+$evcc = \Core\EVCC::factory($config);
 
 if ($evcc->fetch()) {
     echo "### Fetched\n### -------\n\nFound the following evcc relevant events:\n\n";

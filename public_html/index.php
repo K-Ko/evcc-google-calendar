@@ -38,7 +38,7 @@ if (!is_file($lang)) {
 
 $i18n = new \Core\I18N(require $lang);
 
-$evcc = new \Core\EVCC($config);
+$evcc = \Core\EVCC::factory($config);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['messages'][] = $evcc->fetch() ? $i18n->PlansRefreshed : $i18n->EmptyResponse;
@@ -113,11 +113,12 @@ unset($_SESSION['messages']);
         <table class="table border-bottom">
             <thead class="thead-light">
                 <tr>
-                    <th class="text-center w-1"><?= $i18n->DateTime ?></th>
-                    <th class="text-nowrap text-right w-1"><?= $i18n->Remaining ?></th>
-                    <th class="text-center w-1"><?= $i18n->ChargeLevel ?></th>
-                    <th><?= $i18n->Strategy ?></th>
-                    <th><?= $i18n->Comment ?></th>
+                    <th class="text-center"><?= $i18n->DateTime ?></th>
+                    <th class="text-nowrap text-right d-none d-sm-table-cell w-1"><?= $i18n->Remaining ?></th>
+                    <th class="w-1"><?= $i18n->ChargeLevel ?></th>
+                    <th><?= $i18n->Event ?></th>
+                    <th class="d-none d-md-table-cell"><?= $i18n->Strategy ?></th>
+                    <th class="d-none d-md-table-cell"><?= $i18n->Comment ?></th>
                 </tr>
             </thead>
 
@@ -127,18 +128,18 @@ unset($_SESSION['messages']);
                 foreach ($events as $event) {
 
                     // Exclude expired events
-                    if ($event['ts'] < $now) continue;
+                    if ($event['timestamp'] < $now) continue;
 
                     echo '<tr>';
 
                     printf(
-                        '<td class="text-nowrap text-center text-monospace">%s</td>',
-                        date($i18n->DateTimeFormat, $event['ts'])
+                        '<td class="text-sm-nowrap text-center text-monospace">%s</td>',
+                        date($i18n->DateTimeFormat, $event['timestamp'])
                     );
 
                     printf(
-                        '<td class="text-nowrap text-right text-monospace">%s h</td>',
-                        number_format(($event['ts'] - $now) / 3600, 1, ',', '.')
+                        '<td class="text-nowrap text-right text-monospace d-none d-sm-table-cell">%s h</td>',
+                        number_format(($event['timestamp'] - $now) / 3600, 1, ',', '.')
                     );
 
                     // Colored from lg, below just digits
@@ -153,19 +154,26 @@ unset($_SESSION['messages']);
                         round($event['target'] * 1.5)
                     );
 
-                    if (isset($event['strategy'])) {
-                        // {"continuous":true,"precondition":15}
-                        $event['strategy'] = json_decode($event['strategy'], true);
-                        $event['strategy'] = sprintf(
-                            'kontinuierlich: %s &bull; spät: %d Min.',
-                            ['nein', 'ja'][$event['strategy']['continuous']],
-                            $event['strategy']['precondition'] / 60
-                        );
-                    }
+                    printf(
+                        '<td><span data-toggle="tooltip" title="%s">%s</span></td>',
+                        $event['description'],
+                        $event['summary']
+                    );
 
-                    printf('<td>%s</td>', $event['strategy'] ?? '');
+                    printf(
+                        '<td class="d-none d-md-table-cell">%s</td>',
+                        sprintf(
+                            '%s: %s &bull; %s: %s',
+                            $i18n->continuously,
+                            [$i18n->no, $i18n->yes][$event['strategy']['continuous']],
+                            $i18n->late,
+                            $event['strategy']['late']
+                                ? $i18n->all
+                                : sprintf('%d Min.', $event['strategy']['precondition'] / 60)
+                        )
+                    );
 
-                    printf('<td>%s</td>', $event['comment']);
+                    printf('<td class="d-none d-md-table-cell">%s</td>', implode(', ', (array) $event['comment']));
 
                     echo '</tr>';
                 }
@@ -176,7 +184,6 @@ unset($_SESSION['messages']);
 
         <div class="small text-center"><?= file_get_contents(__DIR__ . '/../.version') ?></div>
 
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
@@ -185,6 +192,8 @@ unset($_SESSION['messages']);
 
     <script>
         ($ => {
+            $('[data-toggle="tooltip"]').tooltip();
+
             setTimeout(
                 () => $('#messages').fadeOut(
                     'slow',

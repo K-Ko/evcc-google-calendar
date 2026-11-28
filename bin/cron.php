@@ -14,7 +14,7 @@ if ($config['debug'] ?? false) {
 
 include_once ROOT . '/vendor/autoload.php';
 
-$evcc = new \Core\EVCC($config);
+$evcc = \Core\EVCC::factory($config);
 
 echo date('- d.m.Y H:i'), "\n";
 

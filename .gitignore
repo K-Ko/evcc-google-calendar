@@ -1,10 +1,10 @@
 composer
 
-config.php
-
 /bin/release.php
 /cache/*
+/config/config.php
 /logs/*
+/src/Local/EVCC.php
 /vendor/
 
 !.githold

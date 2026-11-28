@@ -21,7 +21,7 @@ Test your configuration with `php /path/to/evcc-cal/bin/test.php`
 
 ## Calendar events
 
-Assume the summary start token is `::`.
+Assume the event relevant start token is `::`.
 
 ### Define with percent
 
@@ -32,7 +32,7 @@ Assume the summary start token is `::`.
 `:: 90 km Need to go somewhere`
 
 - Calculates the needed SOC for 90 km according to your avg. consumption and battery capacity
-- Add the min. SOC (should be left after the km driven)
+- Add the min. SOC which should be left after the km driven
 
 ### Simplified
 
@@ -46,15 +46,29 @@ evcc expect strategy JSON matching `{"continuous":<bool>,"precondition":<seconds
 
 You can override the strategy as follows, regardless of the global configuration.
 
-Enter this in the event body (not case-sensitive):
+Enter this somewhere in the **event body** in a single line (not case-sensitive):
 
-`(true|false), <hours>`
+`:: (true|false) <hours>`
 
 _Please note that **hours** expected here with a **dot** as decimal separator_
 
-Let’s say you want to charge continuously for an event and use the last 30 minutes for pre-heating:
+Let’s say you want to charge continuously for an event but use at least the last 30 minutes for pre-heating:
 
-`true, 0.5`
+```text
+:: true 0.5
+Event remarks, shown in frontend as tooltip on the event summary
+```
+
+## Extend control logic
+
+If there is a local implementation class in `src/Local/EVCC.php` it will be used to extend the control logic.
+
+```sh
+cp src/Local/EVCC.dist.php src/Local/EVCC.php
+nano src/Local/EVCC.php
+```
+
+Edit the method `checkEvent()` and adjust the `$event` array as needed.
 
 ## Frontend
 
